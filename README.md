@@ -1,53 +1,6 @@
-import_threading
-
-import cv2
-from deepface import DeepFace
-
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
-counter = 0
-
-face_match = False
-
-reference_img = cv2.imread("reference.jpg")
-
-
-def check_face(frame):
-	global face_match
-	try:
-		if DeepFace.verify(frame, reference_img.copy())['verified']:
-			face_match = True
-	else:
-		face_match = False
-
-	except ValueError:
-		face_match = False
-
-
-while True:
-	ret, frame = cap.read()
-
-	if ret:
-		if counter % 30 == 0:
-			try:
-				threading.Thread(target=check_face, args=(frame.copy(),))
-			except ValueError:
-			pass
-		counter += 1
-		
-		if   face_match:
-			cv2.putText(frame, "MATCH!". (20. 450). cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
-	else:
-			cv2.putText(frame, "NO MATCH!". (20. 450). cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
-		cv2.imshow("video", frame)
-
-	key = cv2.waitKey(1)
-	if key == ord ("q"):
-		break
-
-cv2.destroyAllWindows()
-
-
+What it can do:
+	1. Live face recognition using OpenCV and deep learning with Python in real-time through a camera feed.
+ 	1. Using the deep face library, it compares the real-time camera frames with a reference image to determine if there is a match.
+  	1. Integrates OpenCV for camera interaction and visualization, displaying the camera feed in a window and providing real-time feedback on face recognition results.
+   	1. Implementes threading to efficiently handle face recognition tasks separately from the main loop, optimizing performance.
+    	1. Incorporates error handling mechanisms to address potential issues, such as handling value errors when the deep face library does not recognize a face in the image.
