@@ -1,6 +1,3 @@
-# Live-Facial-Recognition
-
-
 import_threading
 
 import cv2
